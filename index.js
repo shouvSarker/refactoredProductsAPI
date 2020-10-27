@@ -139,23 +139,89 @@ app.delete("/products/:id", function (req, res) {
 });
 
 app.get("/products/:id/options", function (req, res) {
-  res.send(req.params.id);
+  var sql = "select * from productoptions where productid = ? ";
+  var params = [req.params.id];
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows,
+    });
+  });
 });
 
 app.get("/products/:id/options/:optionId", function (req, res) {
-  res.send(req.params.optionId);
+  var sql = "select * from productoptions where productid = ? and Id = ?";
+  var params = [req.params.id, req.params.optionId];
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows,
+    });
+  });
 });
 
 app.post("/products/:id/options", function (req, res) {
-  res.send(req.body);
+  var sql =
+    "INSERT INTO productoptions (Id, ProductId, Name, Description) VALUES (?,?,?,?) ";
+  var params = [uuid(), req.params.id, req.body.Name, req.body.Description];
+  db.run(sql, params, function (err, result) {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: req.body,
+      id: this.lastID,
+    });
+  });
 });
 
 app.put("/products/:id/options/:optionId", function (req, res) {
-  res.send(req.body);
+  var sql =
+    "UPDATE productoptions SET Name = ?, Description = ? WHERE ProductId = ? AND Id = ? ";
+  var params = [
+    req.body.Name,
+    req.body.Description,
+    req.params.id,
+    req.params.optionId,
+  ];
+
+  db.run(sql, params, function (err, result) {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: req.body.Name,
+      changes: this.changes,
+    });
+  });
 });
 
 app.delete("/products/:id/options/:optionId", function (req, res) {
-  res.send(req.params.optionId);
+  var sql = "DELETE FROM productoptions WHERE ProductId = ? AND Id = ? ";
+  var params = [req.params.id, req.params.optionId];
+
+  db.run(sql, params, function (err, result) {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      changes: this.changes,
+    });
+  });
 });
 
 app.listen(port, () => {
