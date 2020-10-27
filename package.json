@@ -1,0 +1,17 @@
+{
+  "name": "refactoredsolution",
+  "version": "1.0.0",
+  "description": "Refactored solution of products API initially written in C#",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Shouv",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.0.0"
+  }
+}
