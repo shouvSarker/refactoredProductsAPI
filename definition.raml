@@ -1,0 +1,165 @@
+#%RAML 1.0
+title: Building products REST Services API using Data Types
+version: v1
+protocols: [ HTTP ] 
+baseUri: http://localhost:3000/{version}
+mediaType: application/json
+
+types:
+    UUID:
+        type: string
+        pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+    product-request:
+        type: object
+        properties:
+            Name: string
+            Description: string
+            Price:
+                type: number
+                multipleOf: 0.01
+            DeliveryPrice:
+                type: number
+                multipleOf: 0.01
+    product-response:
+        type: object
+        properties:
+            Id: UUID
+            Name: string
+            Description: string
+            Price:
+                type: number
+                multipleOf: 0.01
+            DeliveryPrice:
+                type: number
+                multipleOf: 0.01
+    option-request:
+        type: object
+        properties:
+            Name: string
+            Description: string
+    option-response:
+        type: object
+        properties:
+            Id: UUID
+            ProductId: UUID
+            Name: string
+            Description: string
+
+/products:
+    get:
+        description: List all products matching name, if provided. Otherwise list all products.
+        queryParameters:
+            name: 
+                type: string
+                required: false
+                example: "Samsung Galaxy S7"
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: product-response []
+                        example: |
+                            [
+                                {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99},
+                                {"Id":"DE1287C0-4B15-4A7B-9D8A-DD21B3CAFEC3","Name":"Apple iPhone 6S","Description":"Newest mobile product from Apple.","Price":1299.99,"DeliveryPrice":15.99}
+                            ]
+    post:
+        description: Creates a new product and returns the newly created product
+        body:
+            application/json:
+                type: product-request
+                example: {"Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99}
+        responses:
+            201:
+                body:
+                    application/json:
+                        type: product-response
+                        example: {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99}
+    /{id}:
+        get:
+            description: Get a product by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            type: product-response
+                            example: |
+                                {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99}
+        put:
+            description: Update a product by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            type: product-response
+                            example: |
+                                {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99}
+        delete:
+            description: Delete a product by id
+            responses:
+                200:
+                    body:
+                        application/json:
+                            type: string
+                            example: Product deleted successfully    
+        /options:
+            get:
+                description: Get all options of a product
+                responses:
+                    200:
+                        body:
+                            application/json:
+                                type: option-response[]
+                                example: |
+                                    [
+                                        {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"},
+                                        {"Id":"A21D5777-A655-4020-B431-624BB331E9A2","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Black","Description":"Black Samsung Galaxy S7"}
+                                    ]
+            post:
+                description: Create a new product option to the specified product
+                body:
+                    application/json:
+                        type: option-request
+                        example: {"Name":"White","Description":"White Samsung Galaxy S7"}
+                responses:
+                    201:
+                        body:
+                            application/json:
+                                type: option-response
+                                example: {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"}
+            /{optionId}:
+                get:
+                    description: Finds the specified product option for the specified product
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    type: option-response
+                                    example: {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"}
+                put:
+                    description: Create a new product option to the specified product
+                    body:
+                        application/json:
+                            type: option-request
+                            example: {"Name":"White","Description":"White Samsung Galaxy S7"}
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    type: option-response
+                                    example: {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"}
+                delete:
+                    description: Delete a product option by id
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    type: string
+                                    example: Product option deleted successfully 
+                                
+
+
+                                    
+
+
+
