@@ -21,19 +21,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/products", function (req, res) {
-  res.send("Here are the products " + req.query.name);
-
-  db.serialize(() => {
-    db.each(
-      `SELECT *
-             FROM products`,
-      (err, row) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log(row);
-      }
-    );
+  var sql = "select * from products";
+  var params = [];
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: rows,
+    });
   });
 });
 
