@@ -21,18 +21,35 @@ app.get("/", (req, res) => {
 });
 
 app.get("/products", function (req, res) {
-  var sql = "select * from products";
-  var params = [];
-  db.all(sql, params, (err, rows) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: "success",
-      data: rows,
+  console.log("Here are the products " + req.query.name);
+
+  if (req.query.name != undefined) {
+    var sql = "select * from products where Name = ? ";
+    var params = [req.query.name];
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: rows,
+      });
     });
-  });
+  } else {
+    var sql = "select * from products";
+    var params = [];
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: rows,
+      });
+    });
+  }
 });
 
 app.get("/products/:id", function (req, res) {
