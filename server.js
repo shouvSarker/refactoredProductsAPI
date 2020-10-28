@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 app.use("/v1", routes);
 
 app.get("/", (req, res) => {
+  // display the html page generated from raml contract
   res.sendFile(__dirname + "/index.html");
 });
 

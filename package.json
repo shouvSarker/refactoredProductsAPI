@@ -2,7 +2,7 @@
   "name": "refactoredsolution",
   "version": "1.0.0",
   "description": "Refactored solution of products API initially written in C#",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "node start.js",
     "test": "jest",

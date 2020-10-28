@@ -1,3 +1,3 @@
-// the server is started from here
+// server starts on port 3000
 const app = require("./server.js");
 app.listen(3000);
