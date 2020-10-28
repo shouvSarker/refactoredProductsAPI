@@ -2,7 +2,7 @@
 title: Building products REST Services API using Data Types
 version: v1
 protocols: [ HTTP ] 
-baseUri: http://localhost:3000/{version}
+baseUri: http://localhost:3001/
 mediaType: application/json
 
 types:
@@ -44,6 +44,14 @@ types:
             ProductId: UUID
             Name: string
             Description: string
+    product-responses:
+        type: object
+        properties:
+            Item: product-response[]
+    option-responses:
+        type: object
+        properties:
+            Item: option-response[]
 
 /products:
     get:
@@ -57,12 +65,13 @@ types:
             200:
                 body:
                     application/json:
-                        type: product-response []
-                        example: |
-                            [
-                                {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99},
-                                {"Id":"DE1287C0-4B15-4A7B-9D8A-DD21B3CAFEC3","Name":"Apple iPhone 6S","Description":"Newest mobile product from Apple.","Price":1299.99,"DeliveryPrice":15.99}
-                            ]
+                        type: product-responses
+                        example:
+                            Item:
+                                [
+                                    {"Id":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Samsung Galaxy S7","Description":"Newest mobile product from Samsung.","Price":1024.99,"DeliveryPrice":16.99},
+                                    {"Id":"DE1287C0-4B15-4A7B-9D8A-DD21B3CAFEC3","Name":"Apple iPhone 6S","Description":"Newest mobile product from Apple.","Price":1299.99,"DeliveryPrice":15.99}
+                                ]
     post:
         description: Creates a new product and returns the newly created product
         body:
@@ -109,12 +118,13 @@ types:
                     200:
                         body:
                             application/json:
-                                type: option-response[]
-                                example: |
-                                    [
-                                        {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"},
-                                        {"Id":"A21D5777-A655-4020-B431-624BB331E9A2","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Black","Description":"Black Samsung Galaxy S7"}
-                                    ]
+                                type: option-responses
+                                example:
+                                    Item:
+                                        [
+                                            {"Id":"0643CCF0-AB00-4862-B3C5-40E2731ABCC9","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"White","Description":"White Samsung Galaxy S7"},
+                                            {"Id":"A21D5777-A655-4020-B431-624BB331E9A2","ProductId":"8F2E9176-35EE-4F0A-AE55-83023D2DB1A3","Name":"Black","Description":"Black Samsung Galaxy S7"}
+                                        ]
             post:
                 description: Create a new product option to the specified product
                 body:

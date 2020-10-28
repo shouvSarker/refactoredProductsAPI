@@ -9,7 +9,8 @@
   "author": "Shouv",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "osprey": "^1.0.0"
   },
   "devDependencies": {
     "sqlite3": "^5.0.0"

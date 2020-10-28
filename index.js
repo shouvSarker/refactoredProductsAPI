@@ -40,8 +40,7 @@ app.get("/products", function (req, res) {
         return;
       }
       res.json({
-        message: "success",
-        data: rows,
+        Items: rows,
       });
     });
   } else {
@@ -53,8 +52,7 @@ app.get("/products", function (req, res) {
         return;
       }
       res.json({
-        message: "success",
-        data: rows,
+        Items: rows,
       });
     });
   }
@@ -68,18 +66,16 @@ app.get("/products/:id", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      data: rows,
-    });
+    res.json(rows[0]);
   });
 });
 
 app.post("/products", function (req, res) {
   var sql =
     "INSERT INTO products (Id, Name, Description, Price, DeliveryPrice) VALUES (?,?,?,?,?) ";
+  var newId = uuid();
   var params = [
-    uuid(),
+    newId,
     req.body.Name,
     req.body.Description,
     req.body.Price,
@@ -90,11 +86,8 @@ app.post("/products", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      data: req.body,
-      id: this.lastID,
-    });
+    var insertedProduct = Object.assign({ id: newId }, req.body);
+    res.status(201).json(insertedProduct);
   });
 });
 
@@ -147,8 +140,7 @@ app.get("/products/:id/options", function (req, res) {
       return;
     }
     res.json({
-      message: "success",
-      data: rows,
+      Items: rows,
     });
   });
 });
