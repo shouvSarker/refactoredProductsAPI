@@ -1,0 +1,11 @@
+#%RAML 1.0 ObjectTypeDeclaration
+type: object
+properties:
+    Name: string
+    Description: string
+    Price:
+        type: number
+        multipleOf: 0.01
+    DeliveryPrice:
+        type: number
+        multipleOf: 0.01

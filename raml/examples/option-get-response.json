@@ -1,0 +1,16 @@
+{
+  "Item": [
+    {
+      "Id": "0643CCF0-AB00-4862-B3C5-40E2731ABCC9",
+      "ProductId": "8F2E9176-35EE-4F0A-AE55-83023D2DB1A3",
+      "Name": "White",
+      "Description": "White Samsung Galaxy S7"
+    },
+    {
+      "Id": "A21D5777-A655-4020-B431-624BB331E9A2",
+      "ProductId": "8F2E9176-35EE-4F0A-AE55-83023D2DB1A3",
+      "Name": "Black",
+      "Description": "Black Samsung Galaxy S7"
+    }
+  ]
+}

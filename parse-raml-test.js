@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
 const raml = require("raml-1-parser");
-const api = raml.loadSync("definition.raml");
+const api = raml.loadSync("raml/api.raml");
 
 if (api.errors && api.errors.length > 0) {
   api.errors.forEach((error) => {
