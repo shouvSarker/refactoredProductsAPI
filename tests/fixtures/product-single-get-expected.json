@@ -1,0 +1,11 @@
+{
+  "Items": [
+    {
+      "Id": "DE1287C0-4B15-4A7B-9D8A-DD21B3CAFEC3",
+      "Name": "Apple iPhone 6S",
+      "Description": "Newest mobile product from Apple.",
+      "Price": 1299.99,
+      "DeliveryPrice": 15.99
+    }
+  ]
+}
