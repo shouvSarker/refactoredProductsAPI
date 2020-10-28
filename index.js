@@ -1,9 +1,12 @@
+const ospreyMiddleware = require("osprey-middleware");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
-app.use(bodyParser.json());
 const sqlite3 = require("sqlite3").verbose();
+
+app.use(bodyParser.json());
+//const router = express.Router().use(ospreyMiddleware("definition.raml"));
 
 //helpers
 let db = new sqlite3.Database(
@@ -58,18 +61,6 @@ app.get("/products", function (req, res) {
   }
 });
 
-app.get("/products/:id", function (req, res) {
-  var sql = "select * from products where Id = ? ";
-  var params = [req.params.id];
-  db.all(sql, params, (err, rows) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-    res.json(rows[0]);
-  });
-});
-
 app.post("/products", function (req, res) {
   var sql =
     "INSERT INTO products (Id, Name, Description, Price, DeliveryPrice) VALUES (?,?,?,?,?) ";
@@ -91,6 +82,18 @@ app.post("/products", function (req, res) {
   });
 });
 
+app.get("/products/:id", function (req, res) {
+  var sql = "select * from products where Id = ? ";
+  var params = [req.params.id];
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json(rows[0]);
+  });
+});
+
 app.put("/products/:id", function (req, res) {
   var sql =
     "UPDATE products SET Name = ?, Description = ?, Price = ?, DeliveryPrice = ? WHERE Id = ? ";
@@ -107,11 +110,8 @@ app.put("/products/:id", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      data: req.body.Name,
-      changes: this.changes,
-    });
+    var updatedProduct = Object.assign({ id: req.params.id }, req.body);
+    res.json(updatedProduct);
   });
 });
 
@@ -124,10 +124,7 @@ app.delete("/products/:id", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      changes: this.changes,
-    });
+    res.json("Product " + req.params.id + " deleted successfully");
   });
 });
 
@@ -145,6 +142,25 @@ app.get("/products/:id/options", function (req, res) {
   });
 });
 
+app.post("/products/:id/options", function (req, res) {
+  console.log("Sending request");
+  var sql =
+    "INSERT INTO productoptions (Id, ProductId, Name, Description) VALUES (?,?,?,?) ";
+  var optionId = uuid();
+  var params = [uuid(), req.params.id, req.body.Name, req.body.Description];
+  db.run(sql, params, function (err, result) {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    var insertedOption = Object.assign(
+      { Id: optionId, ProductId: req.params.id },
+      req.body
+    );
+    res.status(201).json(insertedOption);
+  });
+});
+
 app.get("/products/:id/options/:optionId", function (req, res) {
   var sql = "select * from productoptions where productid = ? and Id = ?";
   var params = [req.params.id, req.params.optionId];
@@ -153,27 +169,7 @@ app.get("/products/:id/options/:optionId", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      data: rows,
-    });
-  });
-});
-
-app.post("/products/:id/options", function (req, res) {
-  var sql =
-    "INSERT INTO productoptions (Id, ProductId, Name, Description) VALUES (?,?,?,?) ";
-  var params = [uuid(), req.params.id, req.body.Name, req.body.Description];
-  db.run(sql, params, function (err, result) {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: "success",
-      data: req.body,
-      id: this.lastID,
-    });
+    res.json(rows[0]);
   });
 });
 
@@ -192,11 +188,11 @@ app.put("/products/:id/options/:optionId", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      data: req.body.Name,
-      changes: this.changes,
-    });
+    var updatedOption = Object.assign(
+      { Id: req.params.optionId, ProductId: req.params.id },
+      req.body
+    );
+    res.json(updatedOption);
   });
 });
 
@@ -209,10 +205,7 @@ app.delete("/products/:id/options/:optionId", function (req, res) {
       res.status(400).json({ error: err.message });
       return;
     }
-    res.json({
-      message: "success",
-      changes: this.changes,
-    });
+    res.json("Product option " + req.params.optionId + " deleted successfully");
   });
 });
 
