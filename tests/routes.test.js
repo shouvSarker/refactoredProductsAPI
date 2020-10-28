@@ -83,7 +83,7 @@ describe("Product Endpoints", () => {
     expect(res.body).toMatchObject(JSON.parse(optionSingle));
   });
 
-  it("should create, update and delete a new option", async () => {
+  it("should create, update and delete an option", async () => {
     const res = await request(app)
       .post("/v1/products/8F2E9176-35EE-4F0A-AE55-83023D2DB1A3/options")
       .set("Content-type", "application/json")
