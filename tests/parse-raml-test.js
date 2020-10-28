@@ -1,7 +1,8 @@
 #!/usr/bin/node
 
 const raml = require("raml-1-parser");
-const api = raml.loadSync("../raml/api.raml");
+// the path is from root directory as the validation script is run from root
+const api = raml.loadSync("raml/api.raml");
 
 if (api.errors && api.errors.length > 0) {
   api.errors.forEach((error) => {
@@ -10,4 +11,4 @@ if (api.errors && api.errors.length > 0) {
   throw "RAML is not valid.";
 }
 
-console.log(JSON.stringify(api, null, 2));
+console.log("RAML is valid");
