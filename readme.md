@@ -7,6 +7,7 @@ The attached project is a refactor of products API originally written in C#. The
 - Run `npm install` to install all the dependencies from `package.json`.
 - The server can be started with `npm start` or with `npm run start-dev` to start it in development mode.
 - The tests can be run with `npm test`. There is also a raml validator that can be run with `npm run raml-validate`.
+- If any of the above command comes back with a module not found error, run `npm rebuild` and then try out the commands.
 - http://localhost:3000/ will display the API documentation. Requests can be sent to http://localhost:3000/v1/path to query the API server.
 
 ### Paths
