@@ -11,6 +11,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  console.log(`Refactored app listening at http://localhost:${port}`);
-});
+module.exports = app;
+
+// app.listen(port, () => {
+//   //console.log(`Refactored app listening at http://localhost:${port}`);
+// });

@@ -15,6 +15,7 @@ router.get("/about", function (req, res) {
 });
 
 //helpers
+//TODO: Seperate and close
 let db = new sqlite3.Database(
   "./App_Data/products.db",
   sqlite3.OPEN_READWRITE,
@@ -22,7 +23,7 @@ let db = new sqlite3.Database(
     if (err) {
       console.error(err.message);
     }
-    console.log("Connected to the products database.");
+    //console.log("Connected to the products database.");
   }
 );
 
@@ -145,7 +146,7 @@ router.get("/products/:id/options", function (req, res) {
 });
 
 router.post("/products/:id/options", function (req, res) {
-  console.log("Sending request");
+  //console.log("Sending request");
   var sql =
     "INSERT INTO productoptions (Id, ProductId, Name, Description) VALUES (?,?,?,?) ";
   var optionId = uuid();
